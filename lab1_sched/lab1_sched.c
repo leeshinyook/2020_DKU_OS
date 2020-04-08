@@ -31,7 +31,7 @@
  */
 // burstTime, turnaroundTime,
 typedef struct process {
-    int processNumber; // 프로세스 번호
+    char processName; // 프로세스 번호
     int runTime; // 동작시간
     int arriveTime; // 도착시간
     int waitTime; // 대기시간
@@ -55,7 +55,7 @@ void SortByArriveTime(process *p, int n) { // 도착시간이 빠른 것 부터,
 //                p[j + 1] = p[j];
 //                p[j] = temp;
                 Swap(p[j], p[j + 1]);
-            } else if(p[j].arriveTime == p[j + 1].arriveTime && p[j].processNumber > p[j + 1].processNumber) { // 번호가 빠른 것 부터
+            } else if(p[j].arriveTime == p[j + 1].arriveTime && p[j].processName > p[j + 1].processName) { // 이름순.
                 Swap(p[j], p[j + 1]);
             }
         }
