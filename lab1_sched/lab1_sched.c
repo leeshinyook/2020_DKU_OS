@@ -31,8 +31,8 @@
  */
 // burstTime, turnaroundTime,
 typedef struct process {
-    char processName; // 프로세스 번호
-    int runTime; // 동작시간
+    char processName; // 프로세스 번호, priority
+    int serviceTime; // 동작시간
     int arriveTime; // 도착시간
     int waitTime; // 대기시간
 } process;
