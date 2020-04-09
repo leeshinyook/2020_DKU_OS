@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <pthread.h>
 #include <asm/unistd.h>
+#include <limits.h>
 #include "lab1_sched_types.h"
 /*
  * you need to implement FCFS, RR, SPN, SRT, HRRN, MLFQ scheduler. 
@@ -35,6 +36,11 @@ typedef struct process {
     int runTime; // 동작시간
     int arriveTime; // 도착시간
     int waitTime; // 대기시간
+    /*for stride----*/
+    int stride;
+    int ticket;
+    int passValue = 0; // initialize
+    /*--------------*/
 } process;
 
 void Swap(process *a, process *b) {
@@ -64,7 +70,17 @@ void SortByArriveTime(process *p, int n) { // 도착시간이 빠른 것 부터,
 void PrintProcess() {
 
 }
-
+void Stride(process *p, int n) {
+    int commonMultiple = 0;
+    int min = INT_MIN;
+    for(int i = 0; i < n; i++) { // 공배수 계산 -> *유클리드 호제법으로 리팩토링필요
+        commonMultiple += p[i].ticket;
+    }
+    for(int i = 0; i < n; i++) { // process마다 stride 설정
+        p[i].stride = commonMultiple / p[i].ticket;
+    }
+    // update -> queue에 넣어주자.
+}
 int main() {
 
 }
