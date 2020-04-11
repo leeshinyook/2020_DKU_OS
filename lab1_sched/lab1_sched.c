@@ -31,12 +31,50 @@
  */
 // burstTime, turnaroundTime,
 typedef struct process {
-    char processName; // 프로세스 번호
-    int runTime; // 동작시간
+    char processName; // 프로세스 번호, priority
+    int serviceTime; // 동작시간
     int arriveTime; // 도착시간
     int waitTime; // 대기시간
 } process;
-
+struct queue
+{
+    int q[100];
+    int begin = 0;
+    int end = 0;
+    void push(int); // input process
+    void pop(); // remove first process
+    bool empty(); // check all process is done
+    int size(); // count of existent process 
+    int front(); // first existent process
+    int back(); // last existent process
+};
+void queue::push(int data)
+{
+    q[end] = data;
+    end += 1;
+}
+void queue::pop()
+{
+    q[begin] = 0;
+    begin += 1;
+}
+bool queue::empty()
+{
+    if(begin == end) return true; 
+    else return false;
+}
+int queue::size()
+{
+    return end - begin; 
+}
+int queue::front()
+{
+    return q[begin]; 
+}
+int queue::back()
+{
+    return q[end]; 
+}
 void Swap(process *a, process *b) {
     int temp = b;
     b = a;
@@ -55,7 +93,7 @@ void SortByArriveTime(process *p, int n) { // 도착시간이 빠른 것 부터,
 //                p[j + 1] = p[j];
 //                p[j] = temp;
                 Swap(p[j], p[j + 1]);
-            } else if(p[j].arriveTime == p[j + 1].arriveTime && p[j].processName > p[j + 1].processName) { // 이름순.
+            } else if(p[j].arriveTime == p[j + 1].arriveTime && p[j].processNumber > p[j + 1].processNumber) { // 번호가 빠른 것 부터
                 Swap(p[j], p[j + 1]);
             }
         }
@@ -64,9 +102,25 @@ void SortByArriveTime(process *p, int n) { // 도착시간이 빠른 것 부터,
 void PrintProcess() {
 
 }
-
+void FIFO(process *p, int n) {
+    int Turnaround[n] = {p[0].serviceTime, };
+    int Wait[n] = {0, };
+    printf("Process number : %d, Turnaround time : %d, Wait time : %d\n", p[0].processNumber, Turnaround[0], Wait[0])
+    for(int i=1;i<n;i++)
+    {
+        Turnaround[i] = Turnaround[i-1] + p[i].serviceTime;
+        Wait[i] = Turnaround[i-1] - p[i].arriveTime;
+        printf("Process number : %d, Turnaround time : %d, Wait time : %d\n", p[i].processNumber, Turnaround[i], Wait[i])
+    }
+}
 int main() {
-
+    process ps[5];//reference 24page workload (5 process)
+    //int num (number of process)
+    //scanf("%d", &num)
+    for(int i=0;i<5;i++)//insert process information
+        scanf("Process number : %d, Arrive time : %d, Service time : %d", &ps[i].processNumber, &ps[i].arriveTime, &ps[i].serviceTime);    
+    SortByArriveTime(ps, 5);
+    FIFO(ps, 5)
 }
 
 
