@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <assert.h>
 #include <pthread.h>
+#include <stdbool.h>
 #include <asm/unistd.h>
 #include <limits.h>
 #include "lab1_sched_types.h"
@@ -119,13 +120,7 @@ void Stride(process *p, int n) {
     }
 }
 int main() {
-    process ps[5];//reference 24page workload (5 process)
-    //int num (number of process)
-    //scanf("%d", &num)
-    for(int i=0;i<5;i++)//insert process information
-        scanf("Process number : %d, Arrive time : %d, Service time : %d", &ps[i].processNumber, &ps[i].arriveTime, &ps[i].serviceTime);    
-    SortByArriveTime(ps, 5);
-    FIFO(ps, 5)
+
 }
 
 
