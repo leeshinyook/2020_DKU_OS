@@ -64,7 +64,7 @@ void Push(char nData){
         pQue[nCount] = nData;
     }
 }
-int Pop(){
+char Pop(){
     int nCount = 0;
     char nResult = 0;
     for(int i = 0; i < QUE_SIZE; i++){
