@@ -26,6 +26,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <asm/unistd.h>
+#include <limits.h>
 #include "lab1_sched_types.h"
 /*
  * you need to implement FCFS, RR, SPN, SRT, HRRN, MLFQ scheduler. 
@@ -36,46 +37,53 @@ typedef struct process {
     int serviceTime; // 동작시간
     int arriveTime; // 도착시간
     int waitTime; // 대기시간
+    /*for stride----*/
+    int stride;
+    int ticket;
+    int passValue = 0; // initialize
+    /*--------------*/
 } process;
-struct queue
-{
-    int q[100];
-    int begin = 0;
-    int end = 0;
-    void push(int); // input process
-    void pop(); // remove first process
-    bool empty(); // check all process is done
-    int size(); // count of existent process 
-    int front(); // first existent process
-    int back(); // last existent process
-};
-void queue::push(int data)
-{
-    q[end] = data;
-    end += 1;
+/* QUEUE
+ * How to Use Queue
+ * 1. Initialize queue size, Exam) QUE_SIZE = 100;
+ * 2. malloc pQue Exam) pQue = (char*)malloc((sizeof(char))*QUE_SIZE);
+ * 3. Init pQue Exam) for(int i = 0; i < QUE_SIZE(); i++) pQUE[i] = NULL;
+ * 4. Done!
+ */
+char *pQue = NULL;
+int QUE_SIZE = 0;
+void Push(char nData){
+    int nCount = 0;
+    for (int i = 0; i < QUE_SIZE; i++){
+        if (pQue[i] == NULL){
+            break;
+        }
+        nCount++;
+    }
+    if (nCount != QUE_SIZE){
+        pQue[nCount] = nData;
+    }
 }
-void queue::pop()
-{
-    q[begin] = 0;
-    begin += 1;
+int Pop(){
+    int nCount = 0;
+    char nResult = 0;
+    for(int i = 0; i < QUE_SIZE; i++){
+        if (pQue[i] != NULL){
+            break;
+        }
+        nCount++;
+    }
+    if (nCount != QUE_SIZE){
+        nResult = pQue[nCount];
+        pQue[nCount] = NULL;
+    }
+    for(int i=0; i < QUE_SIZE; i++){
+        pQue[i] = pQue[i+1];
+    }
+    pQue[QUE_SIZE-1] = NULL;
+    return nResult;
 }
-bool queue::empty()
-{
-    if(begin == end) return true; 
-    else return false;
-}
-int queue::size()
-{
-    return end - begin; 
-}
-int queue::front()
-{
-    return q[begin]; 
-}
-int queue::back()
-{
-    return q[end]; 
-}
+// End of Queue
 void Swap(process *a, process *b) {
     int temp = b;
     b = a;
@@ -93,9 +101,9 @@ void SortByArriveTime(process *p, int n) { // 도착시간이 빠른 것 부터,
 //                temp = p[j + 1];
 //                p[j + 1] = p[j];
 //                p[j] = temp;
-                Swap(p[j], p[j + 1]);
-            } else if(p[j].arriveTime == p[j + 1].arriveTime && p[j].processNumber > p[j + 1].processNumber) { // 번호가 빠른 것 부터
-                Swap(p[j], p[j + 1]);
+                Swap(&p[j], &p[j + 1]);
+            } else if(p[j].arriveTime == p[j + 1].arriveTime && p[j].processName > p[j + 1].processName) { // 번호가 빠른 것 부터
+                Swap(&p[j], &p[j + 1]);
             }
         }
     }
@@ -103,7 +111,6 @@ void SortByArriveTime(process *p, int n) { // 도착시간이 빠른 것 부터,
 void PrintProcess() {
 
 }
-
 int main() {
 
 }
