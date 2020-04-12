@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <assert.h>
 #include <pthread.h>
+#include <stdbool.h>
 #include <asm/unistd.h>
 #include "lab1_sched_types.h"
 /*
