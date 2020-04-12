@@ -111,7 +111,6 @@ void SortByArriveTime(process *p, int n) { // 도착시간이 빠른 것 부터,
 void PrintProcess() {
 
 }
-<<<<<<< HEAD
 void Stride(process *p, int n) {
     int commonMultiple = 0;
     int min = INT_MIN;
@@ -122,8 +121,6 @@ void Stride(process *p, int n) {
         p[i].stride = commonMultiple / p[i].ticket;
     }
 }
-=======
->>>>>>> feature/common
 int main() {
 
 }
