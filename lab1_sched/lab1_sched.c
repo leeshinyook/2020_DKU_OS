@@ -111,14 +111,34 @@ void SortByArriveTime(process *p, int n) { // 도착시간이 빠른 것 부터,
 void PrintProcess() {
 
 }
-void Stride(process *p, int n) {
-    int commonMultiple = 0;
-    int min = INT_MIN;
+
+void Stride(process *p, int n, TC) { // process, total process count, loop count
+    QUE_SIZE = TC;
+    pQue = (char*)malloc((sizeof(char))*QUE_SIZE);
+    for(int i = 0; i < QUE_SIZE; i++) pQue[i] = NULL;
+
+    int commonMultiple = 1;
+    int minIndex = 0;
     for (int i = 0; i < n; i++) { // 공배수 계산 -> *유클리드 호제법으로 리팩토링필요
-        commonMultiple += p[i].ticket;
+        commonMultiple *= p[i].ticket;
+        p[i].passValue = 0;
     }
     for (int i = 0; i < n; i++) { // process마다 stride 설정
         p[i].stride = commonMultiple / p[i].ticket;
+    }
+    for(int i = 0; i < TC; i++) {
+        int min = INT_MAX;
+        for(int j = 0; j < n; j++) {
+            if(min > p[j].passValue) {
+                min = p[j].passValue;
+                minIndex = j;
+            }
+        }
+        Push(p[minIndex].processName);
+        p[minIndex].passValue += p[minIndex].stride;
+    }
+    for(int i = 0; i < TC; i++) {
+        printf("%c\n", Pop());
     }
 }
 int main() {
